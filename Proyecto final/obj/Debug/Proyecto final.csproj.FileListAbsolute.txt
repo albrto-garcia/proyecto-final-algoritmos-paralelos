@@ -1,0 +1,10 @@
+C:\Users\Usuario\Documents\MEGAsync\ALBERT\ALGORITMOS_PARALELOS\3er. parcial\Proyecto final\Proyecto final\bin\Debug\Proyecto final.exe.config
+C:\Users\Usuario\Documents\MEGAsync\ALBERT\ALGORITMOS_PARALELOS\3er. parcial\Proyecto final\Proyecto final\bin\Debug\Proyecto final.exe
+C:\Users\Usuario\Documents\MEGAsync\ALBERT\ALGORITMOS_PARALELOS\3er. parcial\Proyecto final\Proyecto final\bin\Debug\Proyecto final.pdb
+C:\Users\Usuario\Documents\MEGAsync\ALBERT\ALGORITMOS_PARALELOS\3er. parcial\Proyecto final\Proyecto final\obj\Debug\Proyecto final.csproj.AssemblyReference.cache
+C:\Users\Usuario\Documents\MEGAsync\ALBERT\ALGORITMOS_PARALELOS\3er. parcial\Proyecto final\Proyecto final\obj\Debug\Proyecto_final.Properties.Resources.resources
+C:\Users\Usuario\Documents\MEGAsync\ALBERT\ALGORITMOS_PARALELOS\3er. parcial\Proyecto final\Proyecto final\obj\Debug\Proyecto final.csproj.GenerateResource.cache
+C:\Users\Usuario\Documents\MEGAsync\ALBERT\ALGORITMOS_PARALELOS\3er. parcial\Proyecto final\Proyecto final\obj\Debug\Proyecto final.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\Documents\MEGAsync\ALBERT\ALGORITMOS_PARALELOS\3er. parcial\Proyecto final\Proyecto final\obj\Debug\Proyecto final.exe
+C:\Users\Usuario\Documents\MEGAsync\ALBERT\ALGORITMOS_PARALELOS\3er. parcial\Proyecto final\Proyecto final\obj\Debug\Proyecto final.pdb
+C:\Users\Usuario\Documents\MEGAsync\ALBERT\ALGORITMOS_PARALELOS\3er. parcial\Proyecto final\Proyecto final\obj\Debug\AP.AP_PROYECTO_FINAL.resources
