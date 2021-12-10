@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -16,7 +17,7 @@ namespace AP
             InitializeComponent();
         }
 
-        public static int RandomNumber(int min, int max)
+        public int RandomNumber(int min, int max)
         {
             lock (syncLock)
             {
@@ -44,7 +45,7 @@ namespace AP
 
         private int[] Desordenar(int[] vector)
         {
-            int num_unsorted = int.Parse(txtTamano.Text);
+            int num_unsorted = int.Parse(txtTamano.Text) / 2;
 
             for (int i = 0; i < num_unsorted; i++)
             {
@@ -63,45 +64,45 @@ namespace AP
         {
             if (!String.IsNullOrWhiteSpace(txtTamano.Text) && !String.IsNullOrWhiteSpace(txtBuscar.Text))
             {
-                if(int.Parse(txtTamano.Text) == 0)
+                if (int.Parse(txtTamano.Text) <= 1)
                 {
-                    MessageBox.Show("El tamaño debe ser mayor a 0.");
+                    MessageBox.Show("El tamaño debe ser mayor a 1.");
                 }
                 else
-                    if (Math.Floor(Math.Log10(int.Parse(txtTamano.Text)) + 1) > 6 || Math.Floor(Math.Log10(int.Parse(txtBuscar.Text)) + 1) > 9)
+                if (int.Parse(txtIteraciones.Text) == 0)
+                {
+                    MessageBox.Show("Las iteraciones deben ser mayor a 0.");
+                }
+                else
+                {
+                    txtTiempo1.Text = txtTiempo2.Text = txtTiempo3.Text = txtTiempo4.Text = txtTiempo5.Text = "";
+
+                    int[] vector1 = new int[int.Parse(txtTamano.Text)];
+
+                    for (int c = 0; c < vector1.Length; c++)
                     {
-                        MessageBox.Show("Los valores están muy altos. Disminuya su tamaño.");
+                        vector1[c] = c;
                     }
-                    else
-                    {
-                        txtTiempo1.Text = txtTiempo2.Text = txtTiempo3.Text = txtTiempo4.Text = txtTiempo5.Text = "";
 
-                        int[] vector1 = new int[int.Parse(txtTamano.Text)];
+                    vector1 = Desordenar(vector1);
+                    int[] vector2 = (int[])vector1.Clone(); 
+                    int[] vector3 = (int[])vector1.Clone();
+                    int[] vector4 = (int[])vector1.Clone();
+                    int[] vector5 = (int[])vector1.Clone();
 
-                        for (int c = 0; c < vector1.Length; c++)
-                        {
-                            vector1[c] = c;
-                        }
+                    Algoritmos a = new Algoritmos(this);
+                    Thread thread1 = new Thread(() => a.BusquedaSecuencial(txtTiempo1, vector1, int.Parse(txtBuscar.Text), int.Parse(txtIteraciones.Text)));
+                    Thread thread2 = new Thread(() => a.BusquedaBinaria(txtTiempo2, vector2, int.Parse(txtBuscar.Text), int.Parse(txtIteraciones.Text)));
+                    Thread thread3 = new Thread(() => a.OrdenamientoDeLaBurbuja(txtTiempo3, vector3, int.Parse(txtIteraciones.Text)));
+                    Thread thread4 = new Thread(() => a.QuickSort(txtTiempo4, vector4, int.Parse(txtIteraciones.Text)));
+                    Thread thread5 = new Thread(() => a.OrdenamientoPorInsercion(txtTiempo5, vector5, int.Parse(txtIteraciones.Text)));
 
-                        vector1 = Desordenar(vector1);
-                        int[] vector2 = vector1;
-                        int[] vector3 = vector2;
-                        int[] vector4 = vector3;
-                        int[] vector5 = vector4;
-
-                        Algoritmos a = new Algoritmos(this);
-                        Thread thread1 = new Thread(() => a.BusquedaSecuencial(txtTiempo1, vector1, int.Parse(txtBuscar.Text)));
-                        Thread thread2 = new Thread(() => a.BusquedaBinaria(txtTiempo2, vector2, int.Parse(txtBuscar.Text)));
-                        Thread thread3 = new Thread(() => a.OrdenamientoDeLaBurbuja(txtTiempo3, vector3));
-                        Thread thread4 = new Thread(() => a.QuickSort(txtTiempo4, vector4, 0, vector4.Length - 1));
-                        Thread thread5 = new Thread(() => a.OrdenamientoPorInsercion(txtTiempo5, vector5));
-
-                        thread1.Start();
-                        thread2.Start();
-                        thread3.Start();
-                        thread4.Start();
-                        thread5.Start();
-                    }
+                    thread1.Start();
+                    thread2.Start();
+                    thread3.Start();
+                    thread4.Start();
+                    thread5.Start();
+                }
             }
             else
             {
@@ -143,6 +144,28 @@ namespace AP
             }
         }
 
+        private void AP_PROYECTO_FINAL_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Environment.Exit(1);
+        }
+
+        private void txtIteraciones_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (Char.IsDigit(e.KeyChar))
+            {
+                e.Handled = false;
+            }
+            else
+                if (Char.IsControl(e.KeyChar))
+            {
+                e.Handled = false;
+            }
+            else
+            {
+                e.Handled = true;
+            }
+        }
+
         private void linkRepositorio_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             ProcessStartInfo sInfo = new ProcessStartInfo("https://github.com/albrto-garcia/proyecto-final-algoritmos-paralelos");
@@ -160,99 +183,29 @@ namespace AP
             this.ap_proyecto_final_form = ap_proyecto_final_form;
         }
 
-        public void BusquedaSecuencial(TextBox txt, int[] vector, int n)
-        {
-            var start = ap_proyecto_final.StartTime();
-            Boolean x = false;
-
-            for (int a = 0; a < vector.Length; a++)
-            {
-                if (vector[a] == n)
-                {
-                    Console.WriteLine("El número " + n + " se encuentra en la posición " + (a + 1) + ".");
-                    x = true;
-                    break;
-                }
-            }
-
-            if (!x)
-            {
-                Console.WriteLine("El número " + n + " no se encuentra en el arreglo.");
-            }
-
-            var end = ap_proyecto_final.EndTime();
-            var timeDiff = (end - start);
-
-            ap_proyecto_final_form.Invoke(new Action(() => txt.Text = (Convert.ToDecimal(timeDiff.TotalMilliseconds) >= 1000 ?
-                                                                       Convert.ToDecimal(timeDiff.TotalSeconds).ToString() + " segundos" :
-                                                                       Convert.ToDecimal(timeDiff.TotalMilliseconds).ToString() + " milisegundos").ToString()));
-        }
-
-        public void BusquedaBinaria(TextBox txt, int[] vector, int n)
+        public void BusquedaSecuencial(TextBox txt, int[] vector, int n, int iteraciones)
         {
             var start = ap_proyecto_final.StartTime();
 
-            Array.Sort(vector);
+            if (vector.Length == 1)
+                return;
 
-            int l = 0, h = vector.Length - 1;
-            int m = 0;
-            bool found = false;
+            var vector_copy = (int[])vector.Clone();
 
-            while (l <= h && found == false)
+            for (int c = 0; c < iteraciones; c++)
             {
-                m = (l + h) / 2;
+                Boolean x = false;
 
-                if (vector[m] == n)
+                for (int a = 0; a < vector.Length; a++)
                 {
-                    found = true;
-                    break;
-                }
-
-                if (vector[m] > n)
-                    h = m - 1;
-                else
-                    l = m + 1;
-            }
-
-            if (found == false)
-            {
-                Console.WriteLine("\nEl elemento {0} no está en el arreglo.", n);
-            }
-            else
-            {
-                Console.WriteLine("\nEl elemento {0} está en la posición: {1}", n, m + 1);
-            }
-
-            var end = ap_proyecto_final.EndTime();
-            var timeDiff = (end - start);
-
-            ap_proyecto_final_form.Invoke(new Action(() => txt.Text = (Convert.ToDecimal(timeDiff.TotalMilliseconds) >= 1000 ?
-                                                                       Convert.ToDecimal(timeDiff.TotalSeconds).ToString() + " segundos" :
-                                                                       Convert.ToDecimal(timeDiff.TotalMilliseconds).ToString() + " milisegundos").ToString()));
-        }
-
-        public void OrdenamientoDeLaBurbuja(TextBox txt, int[] vector)
-        {
-            var start = ap_proyecto_final.StartTime();
-
-            int t;
-
-            for (int a = 1; a < vector.Length; a++)
-            {
-                for (int b = vector.Length - 1; b >= a; b--)
-                {
-                    if (vector[b - 1] > vector[b])
+                    if (vector[a] == n)
                     {
-                        t = vector[b - 1];
-                        vector[b - 1] = vector[b];
-                        vector[b] = t;
+                        x = true;
+                        break;
                     }
                 }
-            }
 
-            for (int f = 0; f < vector.Length; f++)
-            {
-                Console.WriteLine(vector[f] + "\n");
+                vector = (int[])vector_copy.Clone();
             }
 
             var end = ap_proyecto_final.EndTime();
@@ -263,43 +216,78 @@ namespace AP
                                                                        Convert.ToDecimal(timeDiff.TotalMilliseconds).ToString() + " milisegundos").ToString()));
         }
 
-        public void QuickSort(TextBox txt, int[] vector, int principio, int final)
+        public void BusquedaBinaria(TextBox txt, int[] vector, int n, int iteraciones)
         {
             var start = ap_proyecto_final.StartTime();
-            int i, j, k = vector.Length, centro; double pivote;
-            centro = (principio + final) / 2; pivote = vector[centro]; i = principio; j = final;
 
-            do
+            if (vector.Length == 1)
+                return;
+
+            var vector_copy = (int[])vector.Clone();
+
+            for (int a = 0; a < iteraciones; a++)
             {
-                while (vector[i] < pivote)
-                    i++;
+                Array.Sort(vector);
 
-                while (vector[j] > pivote)
-                    j--;
+                int l = 0, h = vector.Length - 1;
+                int m = 0;
+                bool found = false;
 
-                if (i <= j)
+                while (l <= h && found == false)
                 {
-                    int temp;
-                    temp = vector[i];
-                    vector[i] = vector[j];
-                    vector[j] = temp;
-                    i++;
-                    j--;
+                    m = (l + h) / 2;
+
+                    if (vector[m] == n)
+                    {
+                        found = true;
+                        break;
+                    }
+
+                    if (vector[m] > n)
+                        h = m - 1;
+                    else
+                        l = m + 1;
                 }
 
-                if (j < 0)
+                vector = (int[])vector_copy.Clone();
+            }
+
+            var end = ap_proyecto_final.EndTime();
+            var timeDiff = (end - start);
+
+            ap_proyecto_final_form.Invoke(new Action(() => txt.Text = (Convert.ToDecimal(timeDiff.TotalMilliseconds) >= 1000 ?
+                                                                       Convert.ToDecimal(timeDiff.TotalSeconds).ToString() + " segundos" :
+                                                                       Convert.ToDecimal(timeDiff.TotalMilliseconds).ToString() + " milisegundos").ToString()));
+        }
+
+        public void OrdenamientoDeLaBurbuja(TextBox txt, int[] vector, int iteraciones)
+        {
+            var start = ap_proyecto_final.StartTime();
+
+            if (vector.Length == 1)
+                return;
+
+            var vector_copy = (int[])vector.Clone();
+
+            for (int c = 0; c < iteraciones; c++)
+            {
+                int t;
+
+                for (int a = 1; a < vector.Length; a++)
                 {
-                    for (int l = 0; l < k; l++)
+                    for (int b = vector.Length - 1; b >= a; b--)
                     {
-                        Console.WriteLine(vector[l] + "\n");
+                        if (vector[b - 1] > vector[b])
+                        {
+                            t = vector[b - 1];
+                            vector[b - 1] = vector[b];
+                            vector[b] = t;
+                        }
                     }
                 }
-            } while (i <= j);
 
-            if (principio < j)
-                QuickSort(txt, vector, principio, j);
-            if (i < final)
-                QuickSort(txt, vector, i, final);
+                vector = (int[])vector_copy.Clone();
+            }
 
             var end = ap_proyecto_final.EndTime();
             var timeDiff = (end - start);
@@ -309,27 +297,108 @@ namespace AP
                                                                        Convert.ToDecimal(timeDiff.TotalMilliseconds).ToString() + " milisegundos").ToString()));
         }
 
-        public void OrdenamientoPorInsercion(TextBox txt, int[] vector)
+        public void QuickSort(TextBox txt, int[] vector, int iteraciones)
         {
             var start = ap_proyecto_final.StartTime();
 
-            for (int i = 0; i < vector.Length; i++)
-            {
-                int pos = i;
-                int aux = vector[i];
+            if (vector.Length == 1)
+                return;
 
-                while (pos > 0 && vector[pos - 1] > aux)
+            var vector_copy = (int[])vector.Clone();
+
+            for (int c = 0; c < iteraciones; c++)
+            {
+                int startIndex = 0;
+                int endIndex = vector.Length - 1;
+                int top = -1;
+                int[] stack = new int[vector.Length];
+
+                stack[++top] = startIndex;
+                stack[++top] = endIndex;
+
+                while (top >= 0)
                 {
-                    vector[pos] = vector[pos - 1];
-                    pos--;
+                    endIndex = stack[top--];
+                    startIndex = stack[top--];
+
+                    int p = Particion(ref vector, startIndex, endIndex);
+
+                    if (p - 1 > startIndex)
+                    {
+                        stack[++top] = startIndex;
+                        stack[++top] = p - 1;
+                    }
+
+                    if (p + 1 < endIndex)
+                    {
+                        stack[++top] = p + 1;
+                        stack[++top] = endIndex;
+                    }
                 }
 
-                vector[pos] = aux;
+                vector = (int[])vector_copy.Clone();
+            }
+           
+                var end = ap_proyecto_final.EndTime();
+                var timeDiff = (end - start);
+
+                ap_proyecto_final_form.Invoke(new Action(() => txt.Text = (Convert.ToDecimal(timeDiff.TotalMilliseconds) >= 1000 ?
+                                                                           Convert.ToDecimal(timeDiff.TotalSeconds).ToString() + " segundos" :
+                                                                           Convert.ToDecimal(timeDiff.TotalMilliseconds).ToString() + " milisegundos").ToString()));
+        }
+
+        private static int Particion(ref int[] vector, int principio, int final)
+        {
+            int x = vector[final];
+            int i = (principio - 1);
+
+            for (int j = principio; j <= final - 1; ++j)
+            {
+                if (vector[j] <= x)
+                {
+                    ++i;
+                    Intercambio(ref vector[i], ref vector[j]);
+                }
             }
 
-            for (int i = 0; i < vector.Length; i++)
+            Intercambio(ref vector[i + 1], ref vector[final]);
+
+            return (i + 1);
+        }
+
+        private static void Intercambio(ref int a, ref int b)
+        {
+            int temp = a;
+            a = b;
+            b = temp;
+        }
+
+        public void OrdenamientoPorInsercion(TextBox txt, int[] vector, int iteraciones)
+        {
+            var start = ap_proyecto_final.StartTime();
+
+            if (vector.Length == 1)
+                return;
+
+            var vector_copy = (int[])vector.Clone();
+
+            for (int c = 0; c < iteraciones; c++)
             {
-                Console.WriteLine(vector[i] + "\n");
+                for (int i = 0; i < vector.Length; i++)
+                {
+                    int pos = i;
+                    int aux = vector[i];
+
+                    while (pos > 0 && vector[pos - 1] > aux)
+                    {
+                        vector[pos] = vector[pos - 1];
+                        pos--;
+                    }
+
+                    vector[pos] = aux;
+                }
+
+                vector = (int[])vector_copy.Clone();
             }
 
             var end = ap_proyecto_final.EndTime();

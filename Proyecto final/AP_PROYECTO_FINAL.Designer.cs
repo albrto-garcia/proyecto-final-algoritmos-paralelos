@@ -49,6 +49,8 @@ namespace AP
             this.linkRepositorio = new System.Windows.Forms.LinkLabel();
             this.lblEstudiantesLink = new System.Windows.Forms.Label();
             this.lblTEjecucion = new System.Windows.Forms.Label();
+            this.txtIteraciones = new System.Windows.Forms.TextBox();
+            this.lblIteraciones = new System.Windows.Forms.Label();
             this.pnlInformaciones.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -56,6 +58,7 @@ namespace AP
             // 
             this.txtTamano.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTamano.Location = new System.Drawing.Point(187, 15);
+            this.txtTamano.MaxLength = 6;
             this.txtTamano.Name = "txtTamano";
             this.txtTamano.Size = new System.Drawing.Size(100, 25);
             this.txtTamano.TabIndex = 2;
@@ -65,6 +68,7 @@ namespace AP
             // 
             this.txtBuscar.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBuscar.Location = new System.Drawing.Point(187, 49);
+            this.txtBuscar.MaxLength = 6;
             this.txtBuscar.Name = "txtBuscar";
             this.txtBuscar.Size = new System.Drawing.Size(100, 25);
             this.txtBuscar.TabIndex = 3;
@@ -238,12 +242,34 @@ namespace AP
             this.lblTEjecucion.Text = "TIEMPO DE EJECUCIÓN:";
             this.lblTEjecucion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // txtIteraciones
+            // 
+            this.txtIteraciones.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtIteraciones.Location = new System.Drawing.Point(426, 15);
+            this.txtIteraciones.MaxLength = 6;
+            this.txtIteraciones.Name = "txtIteraciones";
+            this.txtIteraciones.Size = new System.Drawing.Size(100, 25);
+            this.txtIteraciones.TabIndex = 21;
+            this.txtIteraciones.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtIteraciones_KeyPress);
+            // 
+            // lblIteraciones
+            // 
+            this.lblIteraciones.AutoSize = true;
+            this.lblIteraciones.Font = new System.Drawing.Font("Arial Rounded MT Bold", 10F);
+            this.lblIteraciones.Location = new System.Drawing.Point(312, 20);
+            this.lblIteraciones.Name = "lblIteraciones";
+            this.lblIteraciones.Size = new System.Drawing.Size(108, 16);
+            this.lblIteraciones.TabIndex = 22;
+            this.lblIteraciones.Text = "ITERACIONES:";
+            // 
             // AP_PROYECTO_FINAL
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGreen;
             this.ClientSize = new System.Drawing.Size(624, 565);
+            this.Controls.Add(this.lblIteraciones);
+            this.Controls.Add(this.txtIteraciones);
             this.Controls.Add(this.lblTEjecucion);
             this.Controls.Add(this.pnlInformaciones);
             this.Controls.Add(this.btnEjecutar);
@@ -267,6 +293,7 @@ namespace AP
             this.Name = "AP_PROYECTO_FINAL";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ALGORITMOS DE BÚSQUEDA Y ORDENAMIENTO";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AP_PROYECTO_FINAL_FormClosing);
             this.pnlInformaciones.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -293,6 +320,8 @@ namespace AP
         private System.Windows.Forms.Label lblEstudiantesLink;
         private System.Windows.Forms.LinkLabel linkRepositorio;
         private System.Windows.Forms.Label lblTEjecucion;
+        private System.Windows.Forms.TextBox txtIteraciones;
+        private System.Windows.Forms.Label lblIteraciones;
     }
 }
 
